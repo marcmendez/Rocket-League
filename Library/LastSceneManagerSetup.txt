@@ -1,4 +1,4 @@
 sceneSetups:
-- path: Assets/Assets/Scenes/TrainningMovement.unity
+- path: Assets/Assets/Scenes/menu.unity
   isLoaded: 1
   isActive: 1

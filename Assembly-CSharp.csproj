@@ -6,7 +6,7 @@
     <ProductVersion>10.0.20506</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
     <RootNamespace></RootNamespace>
-    <ProjectGuid>{FE45A72E-CEE8-A4A5-B8F3-1A098BAE5CB7}</ProjectGuid>
+    <ProjectGuid>{FE2F3B1E-BCD0-318B-69BD-E6192F3CB550}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <AssemblyName>Assembly-CSharp</AssemblyName>
@@ -48,6 +48,7 @@
   <ItemGroup>
      <Compile Include="Assets\Assets\Scripts\BreakoutController.cs" />
      <Compile Include="Assets\Assets\Scripts\RandomJump.cs" />
+     <Compile Include="Assets\Assets\Scripts\SceneChanger.cs" />
  <Reference Include="UnityEngine.Analytics">
  <HintPath>/Applications/Unity/Unity.app/Contents/UnityExtensions/Unity/UnityAnalytics/UnityEngine.Analytics.dll</HintPath>
  </Reference>
