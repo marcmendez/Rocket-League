@@ -12,11 +12,6 @@ public class RandomJump : MonoBehaviour {
 	// Use this for initialization
 	void Start () {
 		rnd = new System.Random();
-		Example ();
-	}
-
-	void Example() {
-		Physics.gravity = new Vector3(0, -100.0F, 0);
 	}
 
 	
