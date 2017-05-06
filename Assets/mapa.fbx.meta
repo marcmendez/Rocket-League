@@ -1,81 +1,70 @@
 fileFormatVersion: 2
-guid: 124e76f1601b42248813916003366181
-timeCreated: 1494010850
+guid: 000c5c619caf62c40abc86462e41a636
+timeCreated: 1494086016
 licenseType: Free
 ModelImporter:
   serializedVersion: 19
   fileIDToRecycleName:
     100000: Booleano
-    100002: Booleano_1
+    100002: Booleano.1
     100004: Cubo
-    100006: Cubo_
-    100008: Cubo_1
+    100006: Cubo.002
+    100008: Cubo.1
     100010: door_1
     100012: //RootNode
     100014: Sky
-    100016: Sphere_1
-    100018: Sweep
-    100020: Sweep_NURB
-    100022: Tapa_
-    100024: Tapa_1
-    100026: Tapa_1 1
-    100028: Tapa_2
+    100016: Sphere.1
+    100018: Sweep_NURBS
+    100020: Sweep_NURBS.001
+    100022: Tapa_1
+    100024: Tapa_1.001
+    100026: Tapa_2
+    100028: Tapa_2.001
     400000: Booleano
-    400002: Booleano_1
+    400002: Booleano.1
     400004: Cubo
-    400006: Cubo_
-    400008: Cubo_1
+    400006: Cubo.002
+    400008: Cubo.1
     400010: door_1
     400012: //RootNode
     400014: Sky
-    400016: Sphere_1
-    400018: Sweep
-    400020: Sweep_NURB
-    400022: Tapa_
-    400024: Tapa_1
-    400026: Tapa_1 1
-    400028: Tapa_2
-    2300000: Booleano
-    2300002: Booleano_1
-    2300004: Cubo
-    2300006: Cubo_
-    2300008: Cubo_1
-    2300010: door_1
-    2300012: Sky
-    2300014: Sphere_1
-    2300016: Sweep
-    2300018: Sweep_NURB
-    2300020: Tapa_
-    2300022: Tapa_1
-    2300024: Tapa_1 1
-    2300026: Tapa_2
-    3300000: Booleano
-    3300002: Booleano_1
-    3300004: Cubo
-    3300006: Cubo_
-    3300008: Cubo_1
-    3300010: door_1
-    3300012: Sky
-    3300014: Sphere_1
-    3300016: Sweep
-    3300018: Sweep_NURB
-    3300020: Tapa_
-    3300022: Tapa_1
-    3300024: Tapa_1 1
-    3300026: Tapa_2
-    4300000: Booleano_1
-    4300002: Booleano
-    4300004: Cubo_
-    4300006: Cubo
-    4300008: Cubo_1
-    4300010: Sphere_1
-    4300012: Sweep_NURB
-    4300014: Tapa_1
-    4300016: Tapa_
-    4300018: Sky
-    4300020: door_1
-    4300022: Sweep
-    4300024: Tapa_2
+    400016: Sphere.1
+    400018: Sweep_NURBS
+    400020: Sweep_NURBS.001
+    400022: Tapa_1
+    400024: Tapa_1.001
+    400026: Tapa_2
+    400028: Tapa_2.001
+    2300000: Cubo
+    2300002: Cubo.002
+    2300004: Cubo.1
+    2300006: Sphere.1
+    2300008: Sweep_NURBS
+    2300010: Sweep_NURBS.001
+    2300012: Tapa_1
+    2300014: Tapa_1.001
+    2300016: Tapa_2
+    2300018: Tapa_2.001
+    3300000: Cubo
+    3300002: Cubo.002
+    3300004: Cubo.1
+    3300006: Sphere.1
+    3300008: Sweep_NURBS
+    3300010: Sweep_NURBS.001
+    3300012: Tapa_1
+    3300014: Tapa_1.001
+    3300016: Tapa_2
+    3300018: Tapa_2.001
+    4300000: Sweep_NURBS.001
+    4300002: Tapa_2.001
+    4300004: Tapa_1.001
+    4300006: Sweep_NURBS
+    4300008: Tapa_2
+    4300010: Tapa_1
+    4300012: Sphere.1
+    4300014: Cubo.002
+    4300016: Cubo
+    4300018: Cubo.1
   materials:
     importMaterials: 1
     materialName: 0
