@@ -26,6 +26,7 @@ public class BreakoutController : MonoBehaviour {
 	/* OTHERS */
 	private Rigidbody g_RigidBody;
 	private bool fullyGrounded;
+	private int wheelsGrounded;
 
 	// It is used when generated
 	private void Awake () {
@@ -69,7 +70,7 @@ public class BreakoutController : MonoBehaviour {
 
 		/* Auxiliar to notify in conosole, which wheel aplies the force */
 		int wheelCount = 0;
-	
+		wheelsGrounded = 0;
 		foreach (Vector3 Wheel in WheelPositions) {
 
 			RaycastHit grounded;
@@ -78,7 +79,7 @@ public class BreakoutController : MonoBehaviour {
 			if (grounded.distance < g_carHeight) {
 
 				g_RigidBody.AddForceAtPosition (((g_carHeight - grounded.distance) / g_carHeight) * g_GroundedForce * grounded.normal, Wheel);
-				
+				++wheelsGrounded;
 			} else {
 				fullyGrounded = false;
 			}
@@ -125,7 +126,7 @@ public class BreakoutController : MonoBehaviour {
 
 		if (fullyGrounded)
 			g_RigidBody.AddForceAtPosition (g_MotorForce * g_MovementInputValue * transform.forward, transform.position - 8.8f * transform.up);
-		else if (g_MovementInputValue != 0) {
+		else if (g_MovementInputValue != 0 && wheelsGrounded == 0) {
 			Vector3 aux = g_RigidBody.velocity;
 			g_RigidBody.transform.Rotate(new Vector3(1f, 0f, 0f), g_AirTurnVelocity * g_MovementInputValue, Space.Self);
 			g_RigidBody.velocity = aux;
@@ -137,7 +138,7 @@ public class BreakoutController : MonoBehaviour {
 		
 		if (fullyGrounded)
 			g_RigidBody.AddTorque (g_TurnForce * g_TurnInputValue * transform.up);
-		else if (g_TurnInputValue != 0) {
+		else if (g_TurnInputValue != 0 && wheelsGrounded == 0) {
 			Vector3 aux = g_RigidBody.velocity;
 			g_RigidBody.transform.Rotate(new Vector3(0f, 0f, 1f), g_AirTurnVelocity * g_TurnInputValue, Space.Self);
 			g_RigidBody.velocity = aux;
