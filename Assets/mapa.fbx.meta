@@ -65,6 +65,16 @@ ModelImporter:
     4300014: Cubo.002
     4300016: Cubo
     4300018: Cubo.1
+    6400000: Cubo
+    6400002: Cubo.002
+    6400004: Cubo.1
+    6400006: Sphere.1
+    6400008: Sweep_NURBS
+    6400010: Sweep_NURBS.001
+    6400012: Tapa_1
+    6400014: Tapa_1.001
+    6400016: Tapa_2
+    6400018: Tapa_2.001
   materials:
     importMaterials: 1
     materialName: 0
@@ -92,11 +102,11 @@ ModelImporter:
   meshes:
     lODScreenPercentages: []
     globalScale: 1
-    meshCompression: 0
-    addColliders: 0
+    meshCompression: 3
+    addColliders: 1
     importBlendShapes: 1
-    swapUVChannels: 0
-    generateSecondaryUV: 0
+    swapUVChannels: 1
+    generateSecondaryUV: 1
     useFileUnits: 1
     optimizeMeshForGPU: 1
     keepQuads: 0
@@ -107,9 +117,9 @@ ModelImporter:
     secondaryUVPackMargin: 4
     useFileScale: 1
   tangentSpace:
-    normalSmoothAngle: 60
+    normalSmoothAngle: 2
     normalImportMode: 0
-    tangentImportMode: 3
+    tangentImportMode: 0
   importAnimation: 1
   copyAvatar: 0
   humanDescription:
