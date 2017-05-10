@@ -88,12 +88,12 @@ public class BreakoutController : MonoBehaviour {
 			SuspensionWheel (Wheel, grounded.distance);
 
 			/* Auxiliars for debugging treating */
-			if (grounded.distance != 0 && grounded.distance < g_carHeight) Debug.Log("Wheel Force (" + wheelCount + ") -> " + ((g_carHeight - grounded.distance) / g_carHeight) * g_GroundedForce * grounded.normal);
+			if (grounded.distance != 0 && grounded.distance < g_carHeight) //Debug.Log("Wheel Force (" + wheelCount + ") -> " + ((g_carHeight - grounded.distance) / g_carHeight) * g_GroundedForce * grounded.normal);
 			Debug.DrawRay(Wheel, -transform.up * g_carHeight, (grounded.distance < g_carHeight)?Color.red:Color.black); /* Red lines */
 			++wheelCount;
 		}
 			
-		if (!fullyGrounded) Debug.Log ("Falling Force: " + (g_RigidBody.velocity.y * g_RigidBody.velocity.y * g_RigidBody.mass));
+		if (!fullyGrounded) //Debug.Log ("Falling Force: " + (g_RigidBody.velocity.y * g_RigidBody.velocity.y * g_RigidBody.mass));
 	
 		/* Traction */
 		g_RigidBody.AddForce(-1f * Vector3.Dot(g_RigidBody.velocity, transform.right) * transform.right);
@@ -159,7 +159,7 @@ public class BreakoutController : MonoBehaviour {
 			float radiansTravelled = g_RigidBody.velocity.z * Mathf.Rad2Deg * Time.deltaTime / 10;
 
 			foreach (string WheelName in Wheels) {
-				Debug.Log ("Rotate Wheels Radians: " + radiansTravelled + "rad");
+				//Debug.Log ("Rotate Wheels Radians: " + radiansTravelled + "rad");
 				GameObject Wheel = GameObject.Find (WheelName);
 				Wheel.transform.Rotate(new Vector3(0f, 1f, 0f), radiansTravelled, Space.Self);
 			}
@@ -183,7 +183,7 @@ public class BreakoutController : MonoBehaviour {
 		else
 			compression = distance / g_carHeight;
 
-		Debug.Log ("Suspension compression: " + compression);
+		//Debug.Log ("Suspension compression: " + compression);
 
 		WheelsRear.transform.Translate (new Vector3(0,-1f,0) * compression, Space.Self); 
 		WheelsFront.transform.Translate (new Vector3(0,-1f,0) * compression, Space.Self);

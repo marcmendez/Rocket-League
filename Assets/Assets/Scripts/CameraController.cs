@@ -33,7 +33,7 @@ public class CameraController : MonoBehaviour {
 		float OY = OX * distanceRelationXY;
 		float OZ = OX * distanceRelationXZ;
 
-		Debug.Log ("OX: " + OX + " / OY: " + OY + "/ OZ: " + OZ);
+		//Debug.Log ("OX: " + OX + " / OY: " + OY + "/ OZ: " + OZ);
 		if (ball.position.x < car.position.x)
 			targetPos.x = targetPos.x + OX;
 		else
