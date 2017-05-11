@@ -71,6 +71,7 @@ public class BreakoutController : MonoBehaviour {
 		/* Auxiliar to notify in conosole, which wheel aplies the force */
 		int wheelCount = 0;
 		wheelsGrounded = 0;
+		bool wheelsWall = false;
 		foreach (Vector3 Wheel in WheelPositions) {
 
 			RaycastHit grounded;
@@ -79,6 +80,10 @@ public class BreakoutController : MonoBehaviour {
 			if (grounded.distance < g_carHeight) {
 
 				g_RigidBody.AddForceAtPosition (((g_carHeight - grounded.distance) / g_carHeight) * g_GroundedForce * grounded.normal, Wheel);
+				if (grounded.normal.y > -0.9f && grounded.normal.y < 0.9f) {
+					Debug.Log ("Wall force normal:" + grounded.normal);
+					wheelsWall = true;
+				}
 				++wheelsGrounded;
 			} else {
 				fullyGrounded = false;
@@ -87,13 +92,37 @@ public class BreakoutController : MonoBehaviour {
 			/* Suspension applied to wheels */
 			SuspensionWheel (Wheel, grounded.distance);
 
+			/* Auxiliars for debugging treating
+			if (grounded.distance != 0 && grounded.distance < g_carHeight) Debug.Log("Wheel Force (" + wheelCount + ") -> " + ((g_carHeight - grounded.distance) / g_carHeight) * g_GroundedForce * grounded.normal);*/
 			/* Auxiliars for debugging treating */
 			if (grounded.distance != 0 && grounded.distance < g_carHeight) //Debug.Log("Wheel Force (" + wheelCount + ") -> " + ((g_carHeight - grounded.distance) / g_carHeight) * g_GroundedForce * grounded.normal);
+
 			Debug.DrawRay(Wheel, -transform.up * g_carHeight, (grounded.distance < g_carHeight)?Color.red:Color.black); /* Red lines */
 			++wheelCount;
 		}
-			
+
+		foreach (Vector3 Wheel in WheelPositions) {
+
+			if (wheelsWall) {
+				RaycastHit grounded;
+				Physics.Raycast (Wheel, -transform.up, out grounded);
+				float aux_relation;
+				if (grounded.distance < g_carHeight)
+					aux_relation = ((g_carHeight - grounded.distance) / g_carHeight);
+				else
+					aux_relation = 0.5f;
+
+				if (aux_relation > 0.5f)
+					aux_relation = 0.5f;
+				
+				g_RigidBody.AddForceAtPosition (aux_relation * g_GroundedForce * -grounded.normal, Wheel);
+			}
+
+		}
+
+		/*if (!fullyGrounded) Debug.Log ("Falling Force: " + (g_RigidBody.velocity.y * g_RigidBody.velocity.y * g_RigidBody.mass));*/
 		if (!fullyGrounded) //Debug.Log ("Falling Force: " + (g_RigidBody.velocity.y * g_RigidBody.velocity.y * g_RigidBody.mass));
+
 	
 		/* Traction */
 		g_RigidBody.AddForce(-1f * Vector3.Dot(g_RigidBody.velocity, transform.right) * transform.right);
@@ -159,7 +188,11 @@ public class BreakoutController : MonoBehaviour {
 			float radiansTravelled = g_RigidBody.velocity.z * Mathf.Rad2Deg * Time.deltaTime / 10;
 
 			foreach (string WheelName in Wheels) {
+
+				/*Debug.Log ("Rotate Wheels Radians: " + radiansTravelled + "rad");*/
+
 				//Debug.Log ("Rotate Wheels Radians: " + radiansTravelled + "rad");
+
 				GameObject Wheel = GameObject.Find (WheelName);
 				Wheel.transform.Rotate(new Vector3(0f, 1f, 0f), radiansTravelled, Space.Self);
 			}
@@ -183,7 +216,11 @@ public class BreakoutController : MonoBehaviour {
 		else
 			compression = distance / g_carHeight;
 
+
+		/*Debug.Log ("Suspension compression: " + compression);*/
+
 		//Debug.Log ("Suspension compression: " + compression);
+
 
 		WheelsRear.transform.Translate (new Vector3(0,-1f,0) * compression, Space.Self); 
 		WheelsFront.transform.Translate (new Vector3(0,-1f,0) * compression, Space.Self);
