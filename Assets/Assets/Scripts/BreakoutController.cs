@@ -12,7 +12,8 @@ public class BreakoutController : MonoBehaviour {
 	public float g_TurnForce = 6000f;
 	public float g_MotorForce = 160f;
 	public float g_JumpForce = 2500f;
-	public float g_AirTurnVelocity = 2.5f;
+	public float g_AirTurnRotate = 1500f;
+	public float g_AirTurnFlip = 750f;
 	public float g_carHeight = 15f;
 
 	/* AXIS NAMES */
@@ -27,6 +28,7 @@ public class BreakoutController : MonoBehaviour {
 	private Rigidbody g_RigidBody;
 	private bool fullyGrounded;
 	private int wheelsGrounded;
+	private bool wheelsWall;
 
 	// It is used when generated
 	private void Awake () {
@@ -71,7 +73,7 @@ public class BreakoutController : MonoBehaviour {
 		/* Auxiliar to notify in conosole, which wheel aplies the force */
 		int wheelCount = 0;
 		wheelsGrounded = 0;
-		bool wheelsWall = false;
+		wheelsWall = false;
 		foreach (Vector3 Wheel in WheelPositions) {
 
 			RaycastHit grounded;
@@ -156,9 +158,12 @@ public class BreakoutController : MonoBehaviour {
 		if (fullyGrounded)
 			g_RigidBody.AddForceAtPosition (g_MotorForce * g_MovementInputValue * transform.forward, transform.position - 8.8f * transform.up);
 		else if (g_MovementInputValue != 0 && wheelsGrounded == 0) {
-			Vector3 aux = g_RigidBody.velocity;
-			g_RigidBody.transform.Rotate(new Vector3(1f, 0f, 0f), g_AirTurnVelocity * g_MovementInputValue, Space.Self);
-			g_RigidBody.velocity = aux;
+			g_RigidBody.AddTorque (g_AirTurnFlip * g_MovementInputValue * transform.right);
+		}
+
+		/* Adding gravity force without altering others */
+		if (wheelsGrounded < 4 && !wheelsWall) {
+			g_RigidBody.AddForce(175 * new Vector3 (0, -1, 0));
 		}
 	}
 
@@ -168,9 +173,7 @@ public class BreakoutController : MonoBehaviour {
 		if (fullyGrounded)
 			g_RigidBody.AddTorque (g_TurnForce * g_TurnInputValue * transform.up);
 		else if (g_TurnInputValue != 0 && wheelsGrounded == 0) {
-			Vector3 aux = g_RigidBody.velocity;
-			g_RigidBody.transform.Rotate(new Vector3(0f, 0f, 1f), g_AirTurnVelocity * g_TurnInputValue, Space.Self);
-			g_RigidBody.velocity = aux;
+			g_RigidBody.AddTorque (g_AirTurnRotate * g_TurnInputValue * transform.forward);
 		}
 
 	}
