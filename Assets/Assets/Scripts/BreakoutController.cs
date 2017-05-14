@@ -7,6 +7,15 @@ public class BreakoutController : MonoBehaviour {
 
 	public int g_PlayerTeam = 1;
 
+	/* AUDIO CLIPS */
+
+	public AudioClip Accelerate;
+	public AudioClip Deccelerate;
+	public AudioClip Stop;
+	public AudioClip Skid;
+
+	private AudioSource carSound;
+
 	/* FORCES */
 	public float g_GroundedForce = 10.0f;
 	public float g_TurnForce = 6000f;
@@ -29,11 +38,23 @@ public class BreakoutController : MonoBehaviour {
 	private GameObject SkidLeft;
 	private GameObject SkidRight;
 
+	private GameObject AccelerationLights;
+
 	private GameObject BrakeLeft;
 	private GameObject BrakeRight;
 	private GameObject BrakeLeftLong;
 	private GameObject BrakeRightLong;
 	private GameObject BrakeLongCenter;
+
+	private GameObject AccSquare1;
+	private GameObject AccSquare2;
+	private GameObject AccSquare3;
+	private GameObject AccSquare4;
+	private GameObject AccSquare5;
+	private GameObject AccSquare6;
+
+	private ParticleSystem AccTube1;
+	private ParticleSystem AccTube2;
 
 
 	/* OTHERS */
@@ -43,11 +64,13 @@ public class BreakoutController : MonoBehaviour {
 	private bool wheelsWall;
 	private bool shiftedLeft;
 	private bool shiftedRight;
+	private bool changedSound;
 
 	// It is used when generated
 	private void Awake () {
 	
 		g_RigidBody = GetComponent<Rigidbody> ();
+		carSound = GetComponent<AudioSource> ();
 	
 	}
 
@@ -62,16 +85,30 @@ public class BreakoutController : MonoBehaviour {
 		SkidLeft = GameObject.Find ("SkidMarkLeft");
 		SkidRight = GameObject.Find ("SkidMarkRight");
 
+		AccelerationLights = GameObject.Find("AccelerationLights");
 		BrakeLeft = GameObject.Find ("LeftLight");
 		BrakeLeftLong = GameObject.Find ("LeftLightLong");
 		BrakeRight= GameObject.Find ("RightLight");
 		BrakeRightLong = GameObject.Find ("RightLightLong");
 		BrakeLongCenter = GameObject.Find ("LongLightCenter");
 
-		BrakeLeft.GetComponent<Renderer>().enabled = false;
-		BrakeRight.GetComponent<Renderer>().enabled = false;
-		BrakeLeftLong.GetComponent<Renderer>().enabled = false;
-		BrakeRightLong.GetComponent<Renderer>().enabled = false;
+		AccSquare1 = GameObject.Find ("AccSquare1");;
+		AccSquare2 = GameObject.Find ("AccSquare2");;
+		AccSquare3 = GameObject.Find ("AccSquare3");;
+		AccSquare4 = GameObject.Find ("AccSquare4");;
+		AccSquare5 = GameObject.Find ("AccSquare5");;
+		AccSquare6 = GameObject.Find ("AccSquare6");;
+
+		AccTube1 = GameObject.Find ("AccTubeLeft").GetComponent<ParticleSystem> ();
+		AccTube2 = GameObject.Find ("AccTubeRight").GetComponent<ParticleSystem> ();
+
+		AccTube1.Stop ();
+		AccTube2.Stop();
+
+		carSound.clip = Stop;
+		carSound.Play ();
+
+		BrakeLongCenter.SetActive (false);
 
 	}
 
@@ -175,6 +212,7 @@ public class BreakoutController : MonoBehaviour {
 		Jump ();
 		Move ();
 		Turn ();
+		CalculateSound ();
 	}
 
 	private void checkShifted() {
@@ -210,20 +248,56 @@ public class BreakoutController : MonoBehaviour {
 			g_RigidBody.AddTorque (g_AirTurnFlip * g_MovementInputValue * transform.right);
 		}
 
-		if (fullyGrounded && g_MovementInputValue < 0) {
+		if (g_MovementInputValue < 0) {
+			
 			BrakeLeft.GetComponent<Renderer> ().enabled = true;
 			BrakeRight.GetComponent<Renderer> ().enabled = true;
 			BrakeLeftLong.GetComponent<Renderer> ().enabled = true;
 			BrakeRightLong.GetComponent<Renderer> ().enabled = true;
 			BrakeLongCenter.GetComponent<Renderer> ().enabled = true;
-		} else {
+
+			AccSquare1.GetComponent<Renderer> ().enabled = false;
+			AccSquare2.GetComponent<Renderer> ().enabled = false;
+			AccSquare3.GetComponent<Renderer> ().enabled = false;
+			AccSquare4.GetComponent<Renderer> ().enabled = false;
+			AccSquare5.GetComponent<Renderer> ().enabled = false;
+			AccSquare6.GetComponent<Renderer> ().enabled = false;
+
+			AccTube1.Stop ();
+			AccTube2.Stop ();
+
+		} else if (g_MovementInputValue > 0) {
 			BrakeLeft.GetComponent<Renderer> ().enabled = false;
 			BrakeRight.GetComponent<Renderer> ().enabled = false;
 			BrakeLeftLong.GetComponent<Renderer> ().enabled = false;
 			BrakeRightLong.GetComponent<Renderer> ().enabled = false;
 			BrakeLongCenter.GetComponent<Renderer> ().enabled = false;
+			AccSquare1.GetComponent<Renderer> ().enabled = true;
+			AccSquare2.GetComponent<Renderer> ().enabled = true;
+			AccSquare3.GetComponent<Renderer> ().enabled = true;
+			AccSquare4.GetComponent<Renderer> ().enabled = true;
+			AccSquare5.GetComponent<Renderer> ().enabled = true;
+			AccSquare6.GetComponent<Renderer> ().enabled = true;
+			AccTube1.Play ();
+			AccTube2.Play ();
+
+		} else {
+			AccSquare1.GetComponent<Renderer> ().enabled = false;
+			AccSquare2.GetComponent<Renderer> ().enabled = false;
+			AccSquare3.GetComponent<Renderer> ().enabled = false;
+			AccSquare4.GetComponent<Renderer> ().enabled = false;
+			AccSquare5.GetComponent<Renderer> ().enabled = false;
+			AccSquare6.GetComponent<Renderer> ().enabled = false;
+			BrakeLeft.GetComponent<Renderer> ().enabled = false;
+			BrakeRight.GetComponent<Renderer> ().enabled = false;
+			BrakeLeftLong.GetComponent<Renderer> ().enabled = false;
+			BrakeRightLong.GetComponent<Renderer> ().enabled = false;
+			BrakeLongCenter.GetComponent<Renderer> ().enabled = false;
+			AccTube1.Stop ();
+			AccTube2.Stop ();
 		}
-			
+
+
 		/* Adding gravity force without altering others */
 		if (wheelsGrounded < 4 && !wheelsWall) {
 			g_RigidBody.AddForce(175 * new Vector3 (0, -1, 0));
@@ -300,6 +374,30 @@ public class BreakoutController : MonoBehaviour {
 
 		WheelsRear.transform.Translate (new Vector3(0,-1f,0) * compression, Space.Self); 
 		WheelsFront.transform.Translate (new Vector3(0,-1f,0) * compression, Space.Self);
+
+	}
+
+	private void CalculateSound () {
+
+		if (g_TurnInputValue != 0 && (shiftedLeft || shiftedRight)) {
+			if (carSound.clip != Skid) {
+				carSound.clip = Skid;
+				carSound.Play ();
+			}
+		} else if (g_MovementInputValue > 0) {
+			if (carSound.clip != Accelerate) {
+				carSound.clip = Accelerate;
+				carSound.Play ();
+			}
+		} else if (g_MovementInputValue < 0) {
+			if (carSound.clip != Deccelerate) {
+				carSound.clip = Deccelerate;
+				carSound.Play ();
+			}
+		} else if (carSound.clip != Stop) {
+			carSound.clip = Stop;
+			carSound.Play ();
+		}
 
 	}
 
