@@ -25,9 +25,18 @@ public class BreakoutController : MonoBehaviour {
 	private float g_MovementInputValue;
 	private float g_TurnInputValue;
 
-	/* OTHERS */
+	/* EFFECTS */
 	private GameObject SkidLeft;
 	private GameObject SkidRight;
+
+	private GameObject BrakeLeft;
+	private GameObject BrakeRight;
+	private GameObject BrakeLeftLong;
+	private GameObject BrakeRightLong;
+	private GameObject BrakeLongCenter;
+
+
+	/* OTHERS */
 	private Rigidbody g_RigidBody;
 	private bool fullyGrounded;
 	private int wheelsGrounded;
@@ -49,8 +58,20 @@ public class BreakoutController : MonoBehaviour {
 		g_TurnInputValue = 0f;
 		shiftedLeft = false;
 		shiftedRight = false;
+
 		SkidLeft = GameObject.Find ("SkidMarkLeft");
 		SkidRight = GameObject.Find ("SkidMarkRight");
+
+		BrakeLeft = GameObject.Find ("LeftLight");
+		BrakeLeftLong = GameObject.Find ("LeftLightLong");
+		BrakeRight= GameObject.Find ("RightLight");
+		BrakeRightLong = GameObject.Find ("RightLightLong");
+		BrakeLongCenter = GameObject.Find ("LongLightCenter");
+
+		BrakeLeft.GetComponent<Renderer>().enabled = false;
+		BrakeRight.GetComponent<Renderer>().enabled = false;
+		BrakeLeftLong.GetComponent<Renderer>().enabled = false;
+		BrakeRightLong.GetComponent<Renderer>().enabled = false;
 
 	}
 
@@ -189,6 +210,20 @@ public class BreakoutController : MonoBehaviour {
 			g_RigidBody.AddTorque (g_AirTurnFlip * g_MovementInputValue * transform.right);
 		}
 
+		if (fullyGrounded && g_MovementInputValue < 0) {
+			BrakeLeft.GetComponent<Renderer> ().enabled = true;
+			BrakeRight.GetComponent<Renderer> ().enabled = true;
+			BrakeLeftLong.GetComponent<Renderer> ().enabled = true;
+			BrakeRightLong.GetComponent<Renderer> ().enabled = true;
+			BrakeLongCenter.GetComponent<Renderer> ().enabled = true;
+		} else {
+			BrakeLeft.GetComponent<Renderer> ().enabled = false;
+			BrakeRight.GetComponent<Renderer> ().enabled = false;
+			BrakeLeftLong.GetComponent<Renderer> ().enabled = false;
+			BrakeRightLong.GetComponent<Renderer> ().enabled = false;
+			BrakeLongCenter.GetComponent<Renderer> ().enabled = false;
+		}
+			
 		/* Adding gravity force without altering others */
 		if (wheelsGrounded < 4 && !wheelsWall) {
 			g_RigidBody.AddForce(175 * new Vector3 (0, -1, 0));
