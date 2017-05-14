@@ -10,6 +10,7 @@ public class BreakoutController : MonoBehaviour {
 	/* FORCES */
 	public float g_GroundedForce = 10.0f;
 	public float g_TurnForce = 6000f;
+	public float g_TurnDragForce = 20f;
 	public float g_MotorForce = 160f;
 	public float g_JumpForce = 2500f;
 	public float g_AirTurnRotate = 1500f;
@@ -25,10 +26,14 @@ public class BreakoutController : MonoBehaviour {
 	private float g_TurnInputValue;
 
 	/* OTHERS */
+	private GameObject SkidLeft;
+	private GameObject SkidRight;
 	private Rigidbody g_RigidBody;
 	private bool fullyGrounded;
 	private int wheelsGrounded;
 	private bool wheelsWall;
+	private bool shiftedLeft;
+	private bool shiftedRight;
 
 	// It is used when generated
 	private void Awake () {
@@ -42,6 +47,10 @@ public class BreakoutController : MonoBehaviour {
 
 		g_MovementInputValue = 0f;
 		g_TurnInputValue = 0f;
+		shiftedLeft = false;
+		shiftedRight = false;
+		SkidLeft = GameObject.Find ("SkidMarkLeft");
+		SkidRight = GameObject.Find ("SkidMarkRight");
 
 	}
 
@@ -141,17 +150,36 @@ public class BreakoutController : MonoBehaviour {
 	}
 
 	private void FixedUpdate() {
+		checkShifted ();
 		Jump ();
 		Move ();
 		Turn ();
 	}
 
+	private void checkShifted() {
+
+		if (Input.GetKeyDown(KeyCode.LeftShift)) {
+			shiftedLeft = true;
+		} 
+		else if (Input.GetKeyUp(KeyCode.LeftShift)) {
+			shiftedLeft = false;
+		}
+
+		if (Input.GetKeyDown(KeyCode.RightShift)) {
+			shiftedRight = true;
+		} 
+		else if (Input.GetKeyUp(KeyCode.RightShift)) {
+			shiftedRight = false;
+		}
+			
+	}
+	
 	private void Jump() {
 
 		if (Input.GetKeyDown (KeyCode.Space) && fullyGrounded) 
 			g_RigidBody.AddForceAtPosition(g_JumpForce * transform.up, transform.position - 8.8f * transform.up);
 		
-	}
+	} 
 
 	private void Move() {
 
@@ -170,10 +198,20 @@ public class BreakoutController : MonoBehaviour {
 
 	private void Turn() {
 		
-		if (fullyGrounded)
-			g_RigidBody.AddTorque (g_TurnForce * g_TurnInputValue * transform.up);
-		else if (g_TurnInputValue != 0 && wheelsGrounded == 0) {
+		if (fullyGrounded) {
+			if (shiftedLeft || shiftedRight) {
+				g_RigidBody.AddForceAtPosition (g_TurnDragForce * g_TurnInputValue * -transform.right, transform.position - 8.8f * transform.forward);
+				if (g_TurnInputValue != 0) { SkidLeft.SetActive (true); SkidRight.SetActive (true); }
+			} else {
+				g_RigidBody.AddForceAtPosition (g_TurnForce * g_TurnInputValue * -transform.right, transform.position - 8.8f * transform.forward);
+				SkidLeft.SetActive (false); SkidRight.SetActive (false);
+			}
+		} else if (g_TurnInputValue != 0 && wheelsGrounded == 0) {
 			g_RigidBody.AddTorque (g_AirTurnRotate * g_TurnInputValue * transform.forward);
+		}
+
+		if (g_TurnInputValue == 0 || wheelsGrounded == 0) {
+			SkidLeft.SetActive (false); SkidRight.SetActive (false);
 		}
 
 	}

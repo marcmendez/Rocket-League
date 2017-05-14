@@ -54,6 +54,7 @@
      <Compile Include="Assets\Assets\Scripts\GoalTwoController.cs" />
      <Compile Include="Assets\Assets\Scripts\RandomJump.cs" />
      <Compile Include="Assets\Assets\Scripts\SceneChanger.cs" />
+     <Compile Include="Assets\Assets\Scripts\SkidController.cs" />
  <Reference Include="UnityEngine.Analytics">
  <HintPath>/Applications/Unity/Unity.app/Contents/UnityExtensions/Unity/UnityAnalytics/UnityEngine.Analytics.dll</HintPath>
  </Reference>
